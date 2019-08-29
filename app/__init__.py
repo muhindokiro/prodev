@@ -17,7 +17,7 @@ bootstrap = Bootstrap()
 db = SQLAlchemy()
 mail = Mail()
 simple = SimpleMDE()
-admin = Admin()
+admin = Admin(name= "Sacco-admin",template_mode="bootstrap3" )
 
 
 
@@ -30,6 +30,7 @@ def create_app(config_name):
 
     # Creating the app   configurations
     app.config.from_object(config_options[config_name])
+    app.config["FLASK_ADMIN_SWATCH"]="cerulean"
 
     # Initializing flask extensions
     bootstrap.init_app(app)

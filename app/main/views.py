@@ -193,7 +193,7 @@ class OwnerById(Resource):
 @main.route('/register', methods=['POST'])
 class  UserSignIn(Resource):
     def post(self):
-        """Method to allow owner to login"""
+        """Method to allow user to login"""
         json_data = request.get_json(force=True)
         if not json_data:
             return {'message': 'No input data provided'}, 400
@@ -201,20 +201,20 @@ class  UserSignIn(Resource):
         data, errors = login_schema.load(json_data)
         if errors:
             return errors, 422
-        owner = Owner.query.filter_by(email=data['email']).first()
-        if not owner:
-            return {'message': 'No owner exists with that email'}, 400
-        if owner:
-            if owner.verify_password(data['password_hash']):
-                owner_id = owner.id
-                user_token = tk.generate_token(owner_id)
+        user = User.query.filter_by(email=data['email']).first()
+        if not user:
+            return {'message': 'No user exists with that email'}, 400
+        if user:
+            if user.verify_password(data['password_hash']):
+                user_id = user.id
+                user_token = tk.generate_token(user_id)
                 if not user_token:
                     return {
                     'message':'Token Generation Unsuccessful'
                 },401
                 return {
                         'message':'User logged in successfully',
-                        'user_id': owner_id,
+                        'user_id': user_id,
                         'token': user_token
                     },200
             return {
@@ -384,7 +384,6 @@ class TripResource(Resource):
             staff_name=json_data['staff_name'],
             conductor=json_data['conductor'],
             time=json_data['time'],
-            # stati=id
             )
         print(trip.id)
         trip.id = id
