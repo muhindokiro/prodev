@@ -342,7 +342,7 @@ class AssetById(Resource):
 
 @main.route('/trip', methods=['GET','POST'])
 class TripResource(Resource):
-    @login_required
+    # @login_required
     def get(self,id):
         trip = Trip.query.filter_by(id=id).all()
         trips = trips_schema.dump(trip)
@@ -355,7 +355,7 @@ class TripResource(Resource):
             'status': 'No trips found',
         }, 400
     
-    @login_required
+    # @login_required
     def post(self,id):
         userId = GetUserId.user_creds(self)
         owner = Owner.query.filter_by(id=userId).first()
