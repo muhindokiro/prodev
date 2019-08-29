@@ -76,6 +76,7 @@ class OwnerCategory(Resource):
     '''
     View root page function that returns the index page and its data
     '''
+    
     # @login_required
     def get(self):
         owners = Owner.query.all()
@@ -84,6 +85,7 @@ class OwnerCategory(Resource):
             'status': 'success',
             'data': owners
         }, 200
+
     # @cross_origin()
     def post(self):
         json_data = request.get_json(force=True)
@@ -150,8 +152,8 @@ class OwnerById(Resource):
         owner.email=data['email']
         owner.asset=data['asset']
         owner.phone=data['phone']
-        owner.date_added=data['date_added']
-        owner.password_hash=data['password_hash']
+        # owner.date_added=data['date_added']
+        # owner.password_hash=data['password_hash']
         db.session.commit()
         # owners = Owner.query.filter_by(id=id).first()
         result = owner_schema.dump(owner)
