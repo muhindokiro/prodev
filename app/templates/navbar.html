@@ -1,0 +1,30 @@
+<!--Navbar -->
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark success-color">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-333">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a style="font-size: 24px" class="nav-link" href="/">Home
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+                <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
+                  <a style="font-size: 15px" class="dropdown-item" href="/football"></a>
+                  <a style="font-size: 15px" class="dropdown-item" href="/cycling"></a>
+                  <a style="font-size: 15px" class="dropdown-item" href="/rugby"></a>
+                  <a style="font-size: 15px" class="dropdown-item" href="/basketball"></a>
+                </div>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+        <li><a style="font-size: 17px" href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
+        <li style="color:white;padding:15px; font-size: 17px;">{{current_user.username}}</li>
+        <li><a style="font-size: 24px; color: white;" href="{{url_for('auth.logout')}}">Sign out</a></li>
+        {% else %}
+        <li><a style="font-size: 24px; color: white;" href="{{url_for('auth.login')}}">Sign in</a></li>
+        {%endif%}
+      </ul>
+    </div>
+</nav>
+<!--/.Navbar -->
