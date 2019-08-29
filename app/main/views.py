@@ -343,8 +343,8 @@ class AssetById(Resource):
 @main.route('/trip', methods=['GET','POST'])
 class TripResource(Resource):
     # @login_required
-    def get(self,id):
-        trip = Trip.query.filter_by(id=id).all()
+    def get(self):
+        trip = Trip.query.all()
         trips = trips_schema.dump(trip)
         if trips:
             return {
