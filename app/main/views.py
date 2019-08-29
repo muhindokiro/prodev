@@ -76,7 +76,7 @@ class OwnerCategory(Resource):
     '''
     View root page function that returns the index page and its data
     '''
-    
+
     # @login_required
     def get(self):
         owners = Owner.query.all()
@@ -395,7 +395,7 @@ class TripResource(Resource):
 
 @main.route('/trip/<int:id>', methods=['GET','POST'])
 class TripById(Resource):
-    @login_required
+    # @login_required
     def get(self,id):
         trip = Trip.query.filter_by(id=id).first()
         print(trip)
@@ -409,7 +409,7 @@ class TripById(Resource):
             'status': 'No trip found',
         }, 400
         
-    @login_required
+    # @login_required
     def put(self,id):
         userId = GetUserId.user_creds(self)
         owner = Owner.query.filter_by(id=userId).first()
@@ -448,7 +448,7 @@ class TripById(Resource):
                 'data' : result,
             }, 200
         
-    @login_required
+    # @login_required
     def delete(self,id):
         userId = GetUserId.user_creds(self)
         owner = Owner.query.filter_by(id=userId).first()
