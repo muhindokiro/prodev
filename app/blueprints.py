@@ -45,4 +45,4 @@ api.add_resource(TripResource,'/trip')
 api.add_resource(TripById,'/trip/<int:t_id>')
 
 # staff list
-api.add_resource(StaffResource,'/staff/<int:id>')
+api.add_resource(StaffResource,'/staff')

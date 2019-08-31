@@ -25,8 +25,10 @@ class User(UserMixin,db.Model):
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)
+    password_hash = db.Column(db.String(255))
     
-    # def save_comment(self):
+
+    # def save_user(self):
     #     db.session.add(self)
     #     db.session.commit()
 
@@ -43,15 +45,18 @@ class User(UserMixin,db.Model):
         # print(password)
         return check_password_hash(self.password_hash,password)
 
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
+    # def __init__(self, username, email, password_hash):
+    #     self.username = username
+    #     self.email = email
+    #     self.password_hash = password_hash
 
 
 class UserSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
     username = fields.String(required=True)
     email = fields.String(required=True, validate=validate.Length(1))
+    password_hash = fields.String(required=True, validate=validate.Length(1))
+
 
 class LoginSchema(ma.Schema):
     email = fields.String(required=True, validate=validate.Length(1))
@@ -131,8 +136,8 @@ class Asset(db.Model):
 class AssetSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
     number_plate = fields.String(required=True)
-    route = fields.String(required=True, validate=validate.Length(1))
-    owner_id = fields.Integer(required=True)
+    # route = fields.String(required=True, validate=validate.Length(1))
+    # owner_id = fields.Integer(required=True)
   
 
 
@@ -147,7 +152,6 @@ class Staff(db.Model):
     name = db.Column(db.String(255),index = True)
     phone = db.Column(db.Integer,unique = True)
     email = db.Column(db.String(255),unique = True,index = True)
-    password_hash = db.Column(db.String(255), nullable=False)
     date_added = db.Column(db.DateTime,default=datetime.now)
     staff_no = db.Column(db.Integer,unique = True)
     is_admin =db.Column(db.Boolean, default=False)
@@ -157,11 +161,10 @@ class Staff(db.Model):
         db.session.commit()
 
 
-    # def __init__(self,name,phone,email,password_hash,staff_no, date_added,is_admin):
+    # def __init__(self,name,phone,email,staff_no, date_added,is_admin):
     #     self.name = name
     #     self.phone = phone
     #     self.email = email
-    #     self.password_hash = password_hash
     #     self.staff_no = staff_no
     #     self.date_added = date_added
     #     self.is_admin = is_admin
@@ -173,15 +176,12 @@ class StaffSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
     name = fields.String(required=True)
     email = fields.String(required=True, validate=validate.Length(1))
-    password_hash = fields.String(required=True, validate=validate.Length(1))
     phone = fields.Integer(required=True)
     staff_no = fields.Integer(required=True)
-    date_added = fields.String(required=True)
-    is_admin =db.Column(db.Boolean, default=False)
+    date_added = fields.String(required=False)
+    # is_admin =db.Column(db.Boolean, default=False)
 
     
-        
-
 class Trip(db.Model):
     __tablename__ = 'trips'
 
@@ -213,16 +213,19 @@ class Trip(db.Model):
 
 class TripSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
-    number_plate = fields.String(required=True)
+    # number_plate = fields.String(required=True)
+    staff_name = fields.String(required=True)
+    driver = fields.String(required=True)
+    conductor = fields.String(required=True)
     route = fields.String(required=True, validate=validate.Length(1))
-    passengers = fields.Integer(required=True, validate=validate.Length(1))
-    fare = fields.Integer(required=True, validate=validate.Length(1))
+    passengers = fields.Integer(required=True)
+    fare = fields.Integer(required=True)
     station = fields.String(required=True, validate=validate.Length(1))
-    time = name = fields.String(required=True)
+    time = fields.String(required=False)
 
 
 
-        
+# admin.add_view(ModelView(User, db.session))        
 admin.add_view(ModelView(Owner, db.session))
 admin.add_view(ModelView(Staff, db.session))
 admin.add_view(ModelView(Asset, db.session))

@@ -4,7 +4,7 @@ from flask import request
 from functools import wraps
 from werkzeug.exceptions import Unauthorized, BadRequest, NotFound
 from datetime import datetime,timedelta
-from ..models import Owner
+from ..models import User
 
 
 key = 'matatu'
