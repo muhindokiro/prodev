@@ -74,6 +74,7 @@ class Owner(db.Model):
     email = db.Column(db.String(255), unique=True, index=True)
     date_added = db.Column(db.DateTime, default=datetime.now)
     asset = db.relationship('Asset', backref='owner', lazy=True)
+    trip = db.relationship('Trip', backref='owners', lazy=True)
 
     # def __init__(self, name, email, phone,asset, date_added):
     #     self.name = name
@@ -97,6 +98,7 @@ class OwnerSchema(ma.Schema):
     email = fields.String(required=True, validate=validate.Length(1))
     phone = fields.Integer(required = True)
     asset = fields.String(required=True, validate=validate.Length(1))
+    trip = fields.String(required=True, validate=validate.Length(1))
     date_added = fields.String(required=False)
 
 
@@ -191,10 +193,11 @@ class Trip(db.Model):
     driver = db.Column(db.String(255),index = True)
     conductor = db.Column(db.String(255),index = True)
     route = db.Column(db.String(255),index = True)
-    passengers = db.Column(db.Integer,unique = True)
+    passengers = db.Column(db.String(255),unique = True)
     fare = db.Column(db.String(10),unique = True)
     station = db.Column(db.String(255),index = True)
     time = db.Column(db.DateTime,default=datetime.now)
+    owner = db.Column(db.Integer, db.ForeignKey('owners.id'))
 
     # def __init__(self, number_plate,staff_name, driver, conductor, route, passengers, fare, station, time):
     #     self.number_plate = number_plate
@@ -223,13 +226,16 @@ class TripSchema(ma.Schema):
     station = fields.String(required=True, validate=validate.Length(1))
     time = fields.String(required=False)
 
-
+class Mytools(ModelView):
+   can_delete = True
+   page_size = 50
+   column_searchable_list = ['owner']
 
 # admin.add_view(ModelView(User, db.session))        
 admin.add_view(ModelView(Owner, db.session))
 admin.add_view(ModelView(Staff, db.session))
 admin.add_view(ModelView(Asset, db.session))
-admin.add_view(ModelView(Trip, db.session))
+admin.add_view(Mytools(Trip, db.session))
 # path = op.join(op.dirname(__file__), 'static')
 # admin.add_view(FileAdmin(path, '/static/', name='Static Files'))
 
