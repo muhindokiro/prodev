@@ -1,0 +1,112 @@
+{% extends 'admin/master.html' %}
+{% block head_meta %}
+    {{ super() }}
+    {% if not current_user.is_authenticated %}
+        <meta http-equiv="refresh" content="0; url={{ url_for('auth.login') }}"/>
+    {% endif %}
+{% endblock %}
+{% block head_css %}
+    {{ super() }}
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/admin.css')}}">
+{% endblock %}
+{% block access_control %}
+<ul class="nav navbar-nav navbar-right">
+    {% if current_user.is_authenticated %}
+    <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="glyphicon glyphicon-user"></i>{{ current_user.name }}
+                          <span class="caret"></span>
+                      </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a class="btn" href="{{url_for('auth.logout')}}">Sign out</a>
+                    </li>
+                </ul>
+    {% else %}
+    <li>
+        <a class="btn" href="{{url_for('auth.login')}}">Sign in</a>
+      </li>
+           </li>
+</ul>
+{% endif %}
+{% endblock %}
+{% block body %}
+    {{ super() }}
+    {% if current_user.is_authenticated %}
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                Sacco Admin
+                <small>Dashboard</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Dashboard</li>
+            </ol>
+        </section>
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>Owners</h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                        </div>
+                        <a href="/admin/owner" class="small-box-footer">View Owners <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>Staff</h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                        </div>
+                        <a href="/admin/staff" class="small-box-footer">View Staff <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>Assets</h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-bus" aria-hidden="true"></i>
+                        </div>
+                        <a href="/admin/asset" class="small-box-footer">View Assets <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>Trips</h3>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-road"></i>
+                        </div>
+                        <a href="/admin/trip" class="small-box-footer">View Trips <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+            <!-- /.row -->
+            <!-- Main row -->
+        </section>
+        <!-- /.content -->
+    {% endif %}
+{% endblock body %}
+<!-- {% block scripts %}
+{{ super() }}
+<script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+{% endblock %} -->

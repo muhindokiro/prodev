@@ -1,0 +1,70 @@
+<html>
+<!doctype html>
+<title>Trip Report</title>
+<link rel=stylesheet href="{{ url_for('static', filename='style.css') }}" />
+​
+<body>
+​
+<h3 style='text-align: center;'> Trip Report</h3> ​
+
+<!-- CSS Code: Place this code in the document's head (between the <head> -- </head> tags) -->
+<style>
+table.customTable {
+  width: 100%;
+  background-color: #FFFFFF;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #030305;
+  border-style: solid;
+  color: #000000;
+}
+
+table.customTable td, table.customTable th {
+  border-width: 2px;
+  border-color: #030305;
+  border-style: solid;
+  padding: 5px;
+  font-size: 12px;
+}
+
+table.customTable thead {
+  background-color: #6BA1E8;
+}
+</style>
+
+​
+<table class="customTable">
+	<thead>
+		<tr>
+			<th>Vehicle</th>
+			<th>Staff Name</th>
+			<th>Driver</th>
+			<th>Conductor</th>
+			<th>Route</th>
+			<th>Passengers</th>
+			<th>Fare</th>
+			<th>Station</th>
+			<th>Time</th>
+			
+		</tr>
+	</thead>
+{% for trip in trips %}
+	<tr>
+		<td>{{trip.number_plate}}</td>
+		<td>{{trip.staff_name}}</td>
+		<td>{{trip.driver}}</td>
+		<td>{{trip.conductor}}</td>
+		<td>{{trip.route}}</td>
+		<td>{{trip.passengers}}</td>
+		<td>{{trip.fare}}</td>
+		<td>{{trip.station}}</td>
+		<td>{{trip.time}}</td>
+		
+	</tr>
+{% endfor %}
+</table>
+​
+​
+
+</body>
+</html>

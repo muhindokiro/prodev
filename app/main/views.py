@@ -4,6 +4,9 @@ from flask_restful import Resource
 from marshmallow import ValidationError
 from werkzeug.security import check_password_hash, generate_password_hash
 # from .. import db,photos
+from flask_admin import Admin,BaseView
+from flask_login import login_user,login_required,current_user,logout_user
+
 import markdown2
 from app import admin, db, login_manager
 from flask_cors import cross_origin
@@ -30,13 +33,24 @@ staff_schema = StaffSchema()
 
 #comment
 
+# @main.route('/')
+# def index():
+#     '''
+#     View root page function that returns the index page and its data
+#     '''
+#     return render_template('index.html')
+
+class MyView(BaseView):
+    def __init__(self, *args, **kwargs):
+        self._default_view = True
+        super(MyView, self).__init__(*args, **kwargs)
+        self.admin = Admin()
+
 @main.route('/')
-def index():
-    '''
-    View root page function that returns the index page and its data
-    '''
-    title = 'Sacco_Matatu_project'
-    return render_template('index.html',title = title)
+# @login_required
+def admin():
+    return MyView().render('admin/index.html')
+
 
 @main.route('/user/registration', methods=['POST'])
 class UserCategory(Resource):

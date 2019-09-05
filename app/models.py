@@ -11,13 +11,14 @@ from flask_admin.contrib.fileadmin import FileAdmin
 import os.path as op
 from flask_marshmallow import Marshmallow
 from marshmallow import Schema, fields, pre_load, validate
+from flask_weasyprint import HTML,render_pdf
 
 ma = Marshmallow()
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return Staff.query.get(int(user_id))
 
 class User(UserMixin,db.Model):
     __tablename__ = 'users'
@@ -143,7 +144,7 @@ class AssetSchema(ma.Schema):
   
 
 
-class Staff(db.Model):
+class Staff(UserMixin,db.Model):
     """
     Create an staff table
     """
@@ -156,11 +157,26 @@ class Staff(db.Model):
     email = db.Column(db.String(255),unique = True,index = True)
     date_added = db.Column(db.DateTime,default=datetime.now)
     staff_no = db.Column(db.Integer,unique = True)
+    password_hash = db.Column(db.String(255))
     is_admin =db.Column(db.Boolean, default=False)
     
     def save_staff(self):
         db.session.add(self)
         db.session.commit()
+
+    @property
+    def password(self):
+       raise AttributeError('You cannot read the password attribute')
+
+    @password.setter
+    def password(self, password):
+       self.password_hash = generate_password_hash(password)
+
+    def verify_password(self,password):
+       return check_password_hash(self.password_hash,password)
+
+    def __repr__(self):
+       return f"Staff('{self.name}', '{self.email}')"
 
 
     # def __init__(self,name,phone,email,staff_no, date_added,is_admin):
@@ -226,18 +242,64 @@ class TripSchema(ma.Schema):
     station = fields.String(required=True, validate=validate.Length(1))
     time = fields.String(required=False)
 
-class Mytools(ModelView):
+
+
+def action(name, text, confirmation=None):
+    """
+        Use this decorator to expose actions that span more than one
+        entity (model, file, etc)
+        :param name:
+            Action name
+        :param text:
+            Action text.
+        :param confirmation:
+            Confirmation text. If not provided, action will be executed
+            unconditionally.
+    """
+    def wrap(f):
+        f._action = (name, text, confirmation)
+        return f
+    return wrap
+
+class TheView(ModelView):
+    @action('print summary', 'Print Summary', 'Are you sure you want to print these trips summary?')
+
+    def action_recalculate(self, ids):
+        #trips = Trips.query.get(ids)
+        #trips = Trips.query.all()
+        trips = Trip.query.filter(Trip.id.in_(ids)).all()
+        name = 'trips'
+        ids = ids
+        html = render_template('tripsreport.html', ids=ids, name=name, trips=trips)
+        owneremail='';
+        for singletrip in trips:
+            owneremail = singletrip.owners.email ;
+            if owneremail != '':
+                break
+        
+        return render_pdf(HTML(string=html))
+
+class Mytools(TheView):
    can_delete = True
    page_size = 50
-   column_searchable_list = ['owner']
+   column_searchable_list = ['owners.name']
+
+# class Controller(ModelView):
+#     def is_accessible(self):
+#        if  current_user.is_admin == False:
+#            return current_user.is_authenticated
+#        else:
+#            return abort(403)
+#     def not_auth(self):
+#        return "you are not authorised"
 
 # admin.add_view(ModelView(User, db.session))        
 admin.add_view(ModelView(Owner, db.session))
 admin.add_view(ModelView(Staff, db.session))
 admin.add_view(ModelView(Asset, db.session))
 admin.add_view(Mytools(Trip, db.session))
-# path = op.join(op.dirname(__file__), 'static')
-# admin.add_view(FileAdmin(path, '/static/', name='Static Files'))
+path = op.join(op.dirname(__file__), 'static')
+admin.add_view(FileAdmin(path, '/static/', name='Static Files'))
 
 
 
