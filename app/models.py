@@ -1,5 +1,6 @@
 from flask import Flask
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_login import UserMixin
 from app import db,login_manager,admin
 from datetime import datetime
@@ -176,7 +177,7 @@ class Staff(UserMixin,db.Model):
        return check_password_hash(self.password_hash,password)
    
    
-   def get_reset_token(self, expires_sec=1800):
+    def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
     
