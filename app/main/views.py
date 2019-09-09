@@ -40,16 +40,16 @@ staff_schema = StaffSchema()
 #     '''
 #     return render_template('index.html')
 
-class MyView(BaseView):
-    def __init__(self, *args, **kwargs):
-        self._default_view = True
-        super(MyView, self).__init__(*args, **kwargs)
-        self.admin = Admin()
+# class MyView(BaseView):
+#     def __init__(self, *args, **kwargs):
+#         self._default_view = True
+#         super(MyView, self).__init__(*args, **kwargs)
+#         self.admin = Admin()
 
-@main.route('/')
-# @login_required
-def admin():
-    return MyView().render('admin/index.html')
+# @main.route('/')
+# # @login_required
+# def admin():
+#     return MyView().render('admin/index.html')
 
 
 @main.route('/user/registration', methods=['POST'])
