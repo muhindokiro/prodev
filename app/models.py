@@ -1,7 +1,7 @@
 from flask import Flask
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-
+from app import db,login_manager,admin
 from datetime import datetime
 from flask_login import login_required,current_user
 from flask import render_template,request,redirect,url_for,abort
@@ -12,7 +12,7 @@ import os.path as op
 from flask_marshmallow import Marshmallow
 from marshmallow import Schema, fields, pre_load, validate
 from flask_weasyprint import HTML,render_pdf
-
+from flask_admin import Admin
 ma = Marshmallow()
 
 
