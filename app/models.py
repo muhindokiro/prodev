@@ -296,3 +296,7 @@ class Mytools(TheView):
 # admin.add_view(ModelView(User, db.session))        
 
 
+admin.add_view(ModelView(Owner, db.session))
+admin.add_view(ModelView(Staff, db.session))
+admin.add_view(ModelView(Asset, db.session))
+admin.add_view(Mytools(Trip, db.session))
