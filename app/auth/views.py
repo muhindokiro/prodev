@@ -39,3 +39,12 @@ def logout():
     logout_user()
     flash('You have been successfully logged out')
     return redirect(url_for("auth.login"))
+
+def send_reset_email(staff):
+    token = staff.get_reset_token()
+    msg = Message('password reset request', sender = "juniormango2015@gmail.com", recipients=[staff.email])
+    msg.body = f'''To reset your password, visit the following link:
+{url_for('auth.reset_token', token=token, _external=True)}
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)

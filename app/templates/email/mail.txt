@@ -1,4 +1,3 @@
 Hello {{staff.name}}
 Welcome to Sacco-matatu
-We have just seen you have signed up for our application and
-want to welcome you to the organisation.
+We take this opportunity to thank you for joining us and welcome you to the organisation.
