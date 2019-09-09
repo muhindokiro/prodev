@@ -46,10 +46,10 @@ class MyView(BaseView):
         super(MyView, self).__init__(*args, **kwargs)
         self.admin = Admin()
 
-# @main.route('/')
-# # @login_required
-# def admin():
-#     return MyView().render('admin/index.html')
+@main.route('/')
+# @login_required
+def admin():
+    return MyView().render('admin/index.html')
 
 
 @main.route('/user/registration', methods=['POST'])
