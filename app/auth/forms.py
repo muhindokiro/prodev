@@ -23,3 +23,13 @@ class AdminForm(FlaskForm):
     def validate_username(self,data_field):
         if Staff.query.filter_by(name = data_field.data).first():
             raise ValidationError('That name is taken')
+        
+class RequestResetForm(FlaskForm):
+    email = StringField('Your Email Address',validators=[Required(),Email()])
+    submit = SubmitField("request password reset")
+    
+    def validate_email(self,email):
+        staff = Staff.query.filter_by(email = email.data).first()
+        if staff is None: 
+            raise ValidationError('There is no account with that email please register with the administration office') 
+        
