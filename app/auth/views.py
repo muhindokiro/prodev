@@ -28,7 +28,7 @@ def register():
         staff = Staff(email = form.email.data, name = form.name.data,password = form.password.data,is_admin = True )
         db.session.add(staff)
         db.session.commit()
-        # mail_message("Welcome to Sacco-matatu","email/mail",staff.email,staff=staff)
+        mail_message("Welcome to Sacco-matatu","email/mail",staff.email,staff=staff)
 
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html',form=form)
