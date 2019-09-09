@@ -1,7 +1,7 @@
 from flask import Flask
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import db,login_manager,admin
+
 from datetime import datetime
 from flask_login import login_required,current_user
 from flask import render_template,request,redirect,url_for,abort
@@ -294,12 +294,5 @@ class Mytools(TheView):
 #        return "you are not authorised"
 
 # admin.add_view(ModelView(User, db.session))        
-admin.add_view(ModelView(Owner, db.session))
-admin.add_view(ModelView(Staff, db.session))
-admin.add_view(ModelView(Asset, db.session))
-admin.add_view(Mytools(Trip, db.session))
-path = op.join(op.dirname(__file__), 'static')
-admin.add_view(FileAdmin(path, '/static/', name='Static Files'))
-
 
 
