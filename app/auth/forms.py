@@ -32,4 +32,8 @@ class RequestResetForm(FlaskForm):
         staff = Staff.query.filter_by(email = email.data).first()
         if staff is None: 
             raise ValidationError('There is no account with that email please register with the administration office') 
-        
+
+class PasswordResetForm(FlaskForm):
+    password = PasswordField('Password',validators = [Required(), EqualTo('password_confirm',message = 'Passwords must match')])
+    password_confirm = PasswordField('Confirm Passwords',validators = [Required()])
+    submit = SubmitField('reset password')
