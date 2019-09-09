@@ -19,3 +19,16 @@ def login():
         flash('Invalid Username or Password')
     title = "login"
     return render_template('auth/login.html',login_form = login_form,title=title)
+
+@auth.route('/register',methods = ["GET","POST"])
+def register():
+    # prevent non-admins from accessing the page
+    form = AdminForm()
+    if form.validate_on_submit():
+        staff = Staff(email = form.email.data, name = form.name.data,password = form.password.data,is_admin = True )
+        db.session.add(staff)
+        db.session.commit()
+        # mail_message("Welcome to Sacco-matatu","email/mail",staff.email,staff=staff)
+
+        return redirect(url_for('auth.login'))
+    return render_template('auth/register.html',form=form)
