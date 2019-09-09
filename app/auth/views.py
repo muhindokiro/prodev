@@ -48,3 +48,15 @@ def send_reset_email(staff):
 If you did not make this request then simply ignore this email and no changes will be made.
 '''
     mail.send(msg)
+    
+@auth.route('/reset_password',methods = ['GET','POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        staff = Staff.query.filter_by(email=form.email.data).first()
+        send_reset_email(staff)
+        flash('an email has been send with instruction to reset the password.', 'info')
+
+    return render_template('auth/request_reset.html', title = "reset password",request_form=form)
