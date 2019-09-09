@@ -174,6 +174,11 @@ class Staff(UserMixin,db.Model):
 
     def verify_password(self,password):
        return check_password_hash(self.password_hash,password)
+   
+   
+   def get_reset_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'], expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
 
     def __repr__(self):
        return f"Staff('{self.name}', '{self.email}')"
@@ -186,9 +191,6 @@ class Staff(UserMixin,db.Model):
     #     self.staff_no = staff_no
     #     self.date_added = date_added
     #     self.is_admin = is_admin
-
-    def __repr__(self):
-        return f' {self.name}'
 
 class StaffSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
