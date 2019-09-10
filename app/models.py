@@ -1,5 +1,7 @@
 from flask import Flask
+from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_login import UserMixin
 from app import db,login_manager,admin
 from datetime import datetime
@@ -9,10 +11,11 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.contrib.fileadmin import FileAdmin
 import os.path as op
+
 from flask_marshmallow import Marshmallow
 from marshmallow import Schema, fields, pre_load, validate
 from flask_weasyprint import HTML,render_pdf
-
+from flask_admin import Admin
 ma = Marshmallow()
 
 
@@ -174,6 +177,20 @@ class Staff(UserMixin,db.Model):
 
     def verify_password(self,password):
        return check_password_hash(self.password_hash,password)
+   
+   
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer('SECRET_KEY', expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+    
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer('SECRET_KEY')
+        try:
+            staff_id = s.loads(token)['user_id']
+        except:
+            return None
+        return Staff.query.get(staff_id)
 
     def __repr__(self):
        return f"Staff('{self.name}', '{self.email}')"
@@ -186,9 +203,6 @@ class Staff(UserMixin,db.Model):
     #     self.staff_no = staff_no
     #     self.date_added = date_added
     #     self.is_admin = is_admin
-
-    def __repr__(self):
-        return f' {self.name}'
 
 class StaffSchema(ma.Schema):
     id = fields.Integer(dump_only=True)
@@ -294,12 +308,11 @@ class Mytools(TheView):
 #        return "you are not authorised"
 
 # admin.add_view(ModelView(User, db.session))        
+
+
 admin.add_view(ModelView(Owner, db.session))
 admin.add_view(ModelView(Staff, db.session))
 admin.add_view(ModelView(Asset, db.session))
 admin.add_view(Mytools(Trip, db.session))
 path = op.join(op.dirname(__file__), 'static')
 admin.add_view(FileAdmin(path, '/static/', name='Static Files'))
-
-
-

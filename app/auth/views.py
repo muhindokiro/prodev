@@ -28,8 +28,8 @@ def register():
         staff = Staff(email = form.email.data, name = form.name.data,password = form.password.data,is_admin = True )
         db.session.add(staff)
         db.session.commit()
-        # mail_message("Welcome to Sacco-matatu","email/mail",staff.email,staff=staff)
-        
+        mail_message("Welcome to Sacco-matatu","email/mail",staff.email,staff=staff)
+
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html',form=form)
 
@@ -58,7 +58,7 @@ def reset_request():
         staff = Staff.query.filter_by(email=form.email.data).first()
         send_reset_email(staff)
         flash('an email has been send with instruction to reset the password.', 'info')
-        
+
     return render_template('auth/request_reset.html', title = "reset password",request_form=form)
 
 @auth.route('/reset_password/<token>',methods = ['GET','POST'])
