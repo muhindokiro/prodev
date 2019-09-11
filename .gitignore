@@ -1,3 +1,6 @@
 .vscode/
-virtualname/
+virtual/
 *.pyc
+start.sh
+config.py
+migrations/

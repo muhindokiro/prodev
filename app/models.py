@@ -111,7 +111,7 @@ class Asset(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     number_plate = db.Column(db.String(10), index=True)
-    route = db.relationship("Trip",backref = "asset",lazy = True)
+    route = db.Column(db.String(70), index=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('owners.id'))
 
     
@@ -218,7 +218,7 @@ class Trip(db.Model):
     __tablename__ = 'trips'
 
     id = db.Column(db.Integer, primary_key=True)
-    number_plate = db.Column(db.Integer, db.ForeignKey('assets.id'))
+    number_plate = db.Column(db.String(15), index = True)
     staff_name = db.Column(db.String(255),index = True)
     driver = db.Column(db.String(255),index = True)
     conductor = db.Column(db.String(255),index = True)
@@ -285,11 +285,11 @@ class TheView(ModelView):
         name = 'trips'
         ids = ids
         html = render_template('tripsreport.html', ids=ids, name=name, trips=trips)
-        owneremail='';
-        for singletrip in trips:
-            owneremail = singletrip.owners.email ;
-            if owneremail != '':
-                break
+        # owneremail='';
+        # for singletrip in trips:
+        #     owneremail = singletrip.owners.email ;
+        #     if owneremail != '':
+        #         break
         
         return render_pdf(HTML(string=html))
 
@@ -309,10 +309,12 @@ class Mytools(TheView):
 
 # admin.add_view(ModelView(User, db.session))        
 
-
+admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Owner, db.session))
 admin.add_view(ModelView(Staff, db.session))
 admin.add_view(ModelView(Asset, db.session))
 admin.add_view(Mytools(Trip, db.session))
+
+
 path = op.join(op.dirname(__file__), 'static')
 admin.add_view(FileAdmin(path, '/static/', name='Static Files'))

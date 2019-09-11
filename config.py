@@ -3,7 +3,7 @@ import os
 class Config:
 
 
-    SQLALCHEMY_DATABASE_URI ='postgresql+psycopg2://mango:mango@localhost/prodev'
+    SQLALCHEMY_DATABASE_URI ='postgresql+psycopg2://phirifo:1234@localhost/newsacco'
     SECRET_KEY = 'matatu'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOADED_PHOTOS_DEST ='app/static/photos'
@@ -15,6 +15,8 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAIL_USERNAME='juniormango2015@gmail.com'
+    MAIL_PASSWORD='hmladlpbpvcyluyv'
 
 
    
@@ -24,13 +26,13 @@ class ProdConfig(Config):
     pass
 
 class TestConfig(Config):
-    SQLALCHEMY_DATABASE_URI ='postgresql+psycopg2://mango:mango@localhost/prodev'
+    SQLALCHEMY_DATABASE_URI ='postgresql+psycopg2://phirifo:1234@localhost/newsacco_test'
 
 # class Config(Config):
 #     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://blaise:tribune@localhost/projo'
 
 class DevConfig(Config):
-    SQLALCHEMY_DATABASE_URI ='postgresql+psycopg2://mango:mango@localhost/prodev'
+    SQLALCHEMY_DATABASE_URI ='postgresql+psycopg2://phirifo:1234@localhost/newsacco'
 
     DEBUG = True
 
