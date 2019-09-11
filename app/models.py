@@ -285,11 +285,11 @@ class TheView(ModelView):
         name = 'trips'
         ids = ids
         html = render_template('tripsreport.html', ids=ids, name=name, trips=trips)
-        # owneremail='';
-        # for singletrip in trips:
-        #     owneremail = singletrip.owners.email ;
-        #     if owneremail != '':
-        #         break
+        owneremail='';
+        for singletrip in trips:
+            owneremail = singletrip.owners.email ;
+            if owneremail != '':
+                break
         
         return render_pdf(HTML(string=html))
 
