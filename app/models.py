@@ -278,7 +278,7 @@ def action(name, text, confirmation=None):
 class TheView(ModelView):
     @action('print report', 'Print Report', 'Are you sure you want to print the trips summary?')
 
-    def action_recalculate(self, ids):
+    def action_print(self, ids):
         #trips = Trips.query.get(ids)
         #trips = Trips.query.all()
         trips = Trip.query.filter(Trip.id.in_(ids)).all()
