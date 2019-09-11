@@ -282,14 +282,14 @@ class TheView(ModelView):
         #trips = Trips.query.get(ids)
         #trips = Trips.query.all()
         trips = Trip.query.filter(Trip.id.in_(ids)).all()
-        name = 'trips'
         ids = ids
-        html = render_template('tripsreport.html', ids=ids, name=name, trips=trips)
-        owneremail='';
-        for singletrip in trips:
-            owneremail = singletrip.owners.email ;
-            if owneremail != '':
-                break
+        html = render_template('tripsreport.html', ids=ids, trips=trips)
+        
+        # owneremail='';
+        # for singletrip in trips:
+        #     owneremail = singletrip.owners.email ;
+        #     if owneremail != '':
+        #         break
         
         return render_pdf(HTML(string=html))
 
