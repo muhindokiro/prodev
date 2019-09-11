@@ -316,5 +316,3 @@ admin.add_view(ModelView(Asset, db.session))
 admin.add_view(Mytools(Trip, db.session))
 
 
-path = op.join(op.dirname(__file__), 'static')
-admin.add_view(FileAdmin(path, '/static/', name='Static Files'))
