@@ -276,7 +276,7 @@ def action(name, text, confirmation=None):
     return wrap
 
 class TheView(ModelView):
-    @action('print summary', 'Print Summary', 'Are you sure you want to print these trips summary?')
+    @action('print report', 'Print Report', 'Are you sure you want to print the trips summary?')
 
     def action_recalculate(self, ids):
         #trips = Trips.query.get(ids)
